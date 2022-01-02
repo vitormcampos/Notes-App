@@ -13,7 +13,6 @@ namespace Notes_App
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 

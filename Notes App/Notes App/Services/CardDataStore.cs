@@ -6,55 +6,46 @@ using System.Threading.Tasks;
 
 namespace Notes_App.Services
 {
-    public class MockDataStore : IDataStore<Item>
+    public class CardDataStore 
     {
-        readonly List<Item> items;
+        readonly List<Card> cards;
 
-        public MockDataStore()
+        public CardDataStore()
         {
-            items = new List<Item>()
+            cards = new List<Card>()
             {
-                new Item { Id = Guid.NewGuid().ToString(), Text = "First item", Description="This is an item description." },
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Second item", Description="This is an item description." },
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Third item", Description="This is an item description." },
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Fourth item", Description="This is an item description." },
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Fifth item", Description="This is an item description." },
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Sixth item", Description="This is an item description." }
+                new Card() { Id = 0, Text = "Sou o primeiro de muitos" }
             };
         }
 
-        public async Task<bool> AddItemAsync(Item item)
+        public void AddCard(Card card)
         {
-            items.Add(item);
-
-            return await Task.FromResult(true);
+            card.Id = cards.Count;
+            cards.Add(card);
         }
 
-        public async Task<bool> UpdateItemAsync(Item item)
+        public void UpdateCard(Card card)
         {
-            var oldItem = items.Where((Item arg) => arg.Id == item.Id).FirstOrDefault();
-            items.Remove(oldItem);
-            items.Add(item);
-
-            return await Task.FromResult(true);
+            var _card = cards.FirstOrDefault(x => x.Id == card.Id);
+            cards.Remove(_card);
+            cards.Add(card);
         }
 
-        public async Task<bool> DeleteItemAsync(string id)
+        public void DeleteCard(int id)
         {
-            var oldItem = items.Where((Item arg) => arg.Id == id).FirstOrDefault();
-            items.Remove(oldItem);
-
-            return await Task.FromResult(true);
+            var _card = cards.FirstOrDefault(x => x.Id == id);
+            cards.Remove(_card);
         }
 
-        public async Task<Item> GetItemAsync(string id)
+        public Card GetCard(int id)
         {
-            return await Task.FromResult(items.FirstOrDefault(s => s.Id == id));
+            var _card = cards.FirstOrDefault(x => x.Id == id);
+            return _card;
         }
 
-        public async Task<IEnumerable<Item>> GetItemsAsync(bool forceRefresh = false)
+        public IEnumerable<Card> GetCards(bool forceRefresh = false)
         {
-            return await Task.FromResult(items);
+            return cards;
         }
     }
 }
